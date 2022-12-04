@@ -21,11 +21,20 @@ class BooksController < ApplicationController
   # みたいになっているとする
   #
   def create
-    author = Author.create!(name: params[:book][:author_name])
-    book = Book.new(title: params[:book][:title], published_at: params[:book][:published_at])
+    author = Author.create!(author_params)
+    book = Book.new(user_params)
     book.author = author
     book.save!
     redirect_to :show, notice: "#{book.title}/#{author.name} を追加しました"
   end
+
+  private
+
+  def book_params
+    params.require(:book).permit(:title, :published_at)
+  end
+
+  def author_params
+    params.require(:book).permit(:author_name)
+  end
 end
-  
