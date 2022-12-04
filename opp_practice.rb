@@ -22,7 +22,9 @@ class BooksController < ApplicationController
   #
   def create
     author = Author.create!(name: params[:book][:author_name])
-    book = Book.create!(author_id: author.id, title: params[:book][:title], published_at: params[:book][:published_at])
+    book = Book.new(title: params[:book][:title], published_at: params[:book][:published_at])
+    book.author = author
+    book.save!
     redirect_to :show, notice: "#{book.title}/#{author.name} を追加しました"
   end
 end
