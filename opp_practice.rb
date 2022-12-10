@@ -21,10 +21,8 @@ class BooksController < ApplicationController
   # みたいになっているとする
   #
   def create
-    author = Author.create!(author_params)
-    book = Book.new(book_params)
-    book.author = author
-    book.save!
+    book = Book.create(book_params)
+    book.create_author(author_params)
     redirect_to :show, notice: "#{book.title}/#{author.name} を追加しました"
   end
 
