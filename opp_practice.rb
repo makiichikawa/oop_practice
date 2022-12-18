@@ -1,13 +1,11 @@
 # 本モデル
 class Book < ApplicationRecord
   belongs_to :author
-  before_save do
-    # 本にはISBNという番号が割りふられる。ここではその番号を自動で取得してくれるサービスがあるとする
-    self.isbn = Faraday.get('/isbn_publish_service')
-  end
   class << self
     def create_book_with_author(args)
-      Author.create(name: args[:author_name]).books.create(name: args[:name], title: args[:title])
+      # 本にはISBNという番号が割りふられる。ここではその番号を自動で取得してくれるサービスがあるとする
+      isbn = Faraday.get('/isbn_publish_service')
+      Author.create(name: args[:author_name]).books.create(name: args[:name], title: args[:title], isbn: isbn)
     end
   end
 end
