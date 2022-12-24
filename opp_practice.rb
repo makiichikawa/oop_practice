@@ -1,11 +1,12 @@
 # 本モデル
 class Book < ApplicationRecord
   belongs_to :author
+  validates :published_at, :title, presence: true
   class << self
     def create_book_with_author(args)
       # 本にはISBNという番号が割りふられる。ここではその番号を自動で取得してくれるサービスがあるとする
       isbn = Faraday.get('/isbn_publish_service')
-      Author.create_find_by!(name: args[:author_name]).books.create(published_at: args[:published_at], title: args[:title], isbn: isbn)
+      Author.create_find_by!(name: args[:author_name]).books.create!(published_at: args[:published_at], title: args[:title], isbn: isbn)
     end
   end
 end
